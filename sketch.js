@@ -8,9 +8,9 @@ var score=0;
 var PLAY=1;
 var END=0;
 var gameState=PLAY;
-var life=3;
+var life=0;
 var  gameOverImage,restartImage,gameOver,restart;
-
+var dis;
 function preload(){
   monkeyImages=loadAnimation("Monkey_01.png","Monkey_02.png","Monkey_03.png","Monkey_04.png","Monkey_05.png","Monkey_06.png","Monkey_07.png","Monkey_08.png","Monkey_09.png","Monkey_10.png");
   
@@ -18,7 +18,7 @@ function preload(){
  
 stoneImage=loadImage("stone.png");
   
-jungleI=loadImage("jungle.jpg");
+jungleI=loadImage("jungleM.jpg");
 
 gameOverImage=loadImage("gameOver.png");
   restartImage=loadImage("restart.png")                                   
@@ -30,12 +30,20 @@ function setup() {
  // jungle.width = 1000
   //jungle.addImage("jungle",jungleI);
   //jungle.scale=1;
-/*
+
   jungle1=createSprite(290,150,200,100);
   jungle1.addImage("jungle",jungleI);
   jungle1.scale=0.6;
-*/
+
   //jungle.velocityX=-5;
+  gameOver=createSprite(camera.position.x,150);
+  gameOver.addImage("gameOver",gameOverImage);
+  gameOver.visible=false;
+  restart=createSprite(camera.position.x,182);
+  restart.addImage("restart",restartImage);
+  restart.scale=0.7
+  restart.visible=false;
+
   monkey=createSprite(100,250,20,10);
   monkey.addAnimation("running",monkeyImages);
   monkey.scale=0.08;
@@ -45,13 +53,7 @@ function setup() {
   inviGround.visible=false;
   inviGround.velocityX = 6;
   
-  gameOver=createSprite(300,150);
-  gameOver.addImage("gameOver",gameOverImage);
-  gameOver.visible=false;
-  restart=createSprite(300,182);
-  restart.addImage("restart",restartImage);
-  restart.scale=0.7
-  restart.visible=false;
+  
   
   stones=new Group();
   food=new Group();
@@ -72,8 +74,13 @@ function draw(){
   //  camera.position.y = height/2;
             
              //jungle.velocityX=-6-score/15  ;
-var a= 612
 
+
+dis = camera.position.x - jungle1.x
+console.log(dis)
+if(dis>300){
+  jungle1.x = camera.position.x + 300
+}
 /*
 if(camera.position.x%1224===0){
   //jungle1.x=1484;
@@ -110,10 +117,15 @@ console.log(jungle1.x,jungle.x)
           } 
            createBananas();
           createStones();
-            if(monkey.scale<0.08){
-               monkey.scale=0.08
-               }
-            switch(score){
+          if(monkey.scale<0.08){
+            monkey.scale=0.08
+            }
+            if(monkey.scale> 0.16){
+              monkey.scale=0.16
+              }
+              
+
+          /*  switch(score){
               case 10:
                 score+=2
                 monkey.scale+=0.02
@@ -133,14 +145,21 @@ console.log(jungle1.x,jungle.x)
                 break;
 
               default:  break;   
+            }*/
+            if(score%10===0 && score!==0){
+              monkey.scale += 0.02
+              score += 2;
             }
     if(life===0){
       gameState=END;
     }
   }
   else if(gameState===END){
+
     gameOver.visible=true;
     restart.visible=true;
+    gameOver.x = camera.position.x;
+    restart.x = camera.position.x;
     stones.destroyEach();
     food.destroyEach();
    // jungle.velocityX=0;
@@ -169,7 +188,7 @@ function reset(){
   life=3;
   score=0;
   monkey.scale=0.08
-monkey.x=100;
+//monkey.x=100;
 monkey.y=250;
 }
 function createBananas(){
