@@ -100,7 +100,7 @@ console.log(jungle1.x,jungle.x)
  
 
 
-          if (keyDown("space")&&monkey.y>208){
+          if ((keyDown("space")||mousePressedOver(monkey))&&monkey.y>208){
             monkey.velocityY=-12
           }
           monkey.velocityY+=0.8    
