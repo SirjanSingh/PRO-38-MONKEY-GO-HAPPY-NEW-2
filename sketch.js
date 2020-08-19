@@ -8,7 +8,7 @@ var score=0;
 var PLAY=1;
 var END=0;
 var gameState=PLAY;
-var life=0;
+var life=3;
 var  gameOverImage,restartImage,gameOver,restart;
 var dis;
 function preload(){
